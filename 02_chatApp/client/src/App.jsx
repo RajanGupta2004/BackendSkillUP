@@ -5,7 +5,7 @@ import WhatsAppInterface from "./components/chatWindow";
 function App() {
   return (
     <>
-      {/* <WhatsAppInterface /> */}
+      <WhatsAppInterface />
 
       <ChatApp />
     </>
