@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Streaming Demo</title>
+  </head>
+  <body>
+    <h1>Streaming Data From Node.js</h1>
+    <pre id="output" style="padding: 20px; border: 1px solid black"></pre>
+
+    <script>
+      const output = document.getElementById("output");
+
+      fetch("http://localhost:9000/text")
+        .then((response) => {
+          const reader = response.body.getReader();
+          const decoder = new TextDecoder();
+
+          function readChunk() {
+            reader.read().then(({ done, value }) => {
+              if (done) {
+                output.innerHTML += "\n--- STREAM ENDED ---";
+                return;
+              }
+
+              // Convert chunk to string
+              const chunkText = decoder.decode(value);
+
+              // Add chunk to output box
+              output.innerHTML += chunkText;
+
+              // Continue reading next chunk
+              readChunk();
+            });
+          }
+
+          readChunk();
+        })
+        .catch((err) => console.error(err));
+    </script>
+  </body>
+</html>
